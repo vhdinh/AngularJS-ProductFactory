@@ -4,7 +4,32 @@
 	<script type="text/javascript" src="angular.js"></script>
 	<script type="text/javascript">
 		var myAppModule = angular.module("myApp", []);
-		
+
+		// create factory(attached to this module)
+		myAppModule.factory('productsFactory', function(){
+			$scope.products = [
+				{name: "Keyboard", price: 149.99},
+				{name: "Mouse", price: 59.99},
+				{name: "Basketball", price: 59.99},
+			];
+			var factory = {}
+			// add a getProducts key to factory object with a value of a function
+			factory.getProducts = function(callback) {
+				// pass the products to a callback to be used by whoever calls the method
+				callback(products)
+			}
+			return factory;
+		});
+
+		// create a controller(attached to this module) and inject productsFactory in inject
+		myAppModule.controller("productsController", function($scope, productsFactory){
+			// initialize an empy array so $scope.products maintains a consistent data type
+			$scope.products = [];
+			// run the getProducts method and set $scope data in callback
+			productsFactory.getProducts(function (data){
+				$scope.products = data;
+			})
+		})
 	</script>
 </head>
 <body>
