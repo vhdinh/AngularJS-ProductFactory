@@ -12,13 +12,26 @@
 				{name: "Mouse", price: 59.99},
 				{name: "Basketball", price: 59.99},
 			];
+
 			var factory = {}
 			// add a getProducts key to factory object with a value of a function
-			factory.getProducts = function(callback) {
+			factory.getProducts = function(steve) {
 				// pass the products to a callback to be used by whoever calls the method
-				callback(products)
+				steve(products)
 			}
+
+			//create new product
+			factory.addProduct = function(product){
+				console.log("INCOMING", product)
+				products.push(product)
+			} 
+
 			return factory;
+
+
+
+
+		
 		});
 
 		// create a controller(attached to this module) and inject productsFactory in inject
@@ -29,11 +42,30 @@
 			productsFactory.getProducts(function (data){
 				$scope.products = data;
 			})
+
+
+			$scope.addProduct = function(){
+				// add to products array
+				console.log("YOOOOOO",$scope.newProduct)
+				productsFactory.addProduct($scope.newProduct)
+				// clear form values
+				$scope.newProduct = {};
+			}
+
+
 		})
 	</script>
 </head>
 <body>
 	<div id="container" ng-controller="productsController">
+		<form>
+			<p>Product Name:</p> <input type="text" ng-model="newProduct.name">
+			<p>Product Price:</p> <input type="number" step="0.01" ng-model="newProduct.price">
+			<input id="submitProd" type="submit" value="Add Product" ng-click="addProduct()">
+
+		</form>
+
+
 		<table>
 			<tr>
 				<td><button>Name</button></td>
